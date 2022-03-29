@@ -8,7 +8,8 @@
 import { defineAsyncComponent } from "vue";
 
 export default {
-  components: {
+  name:'NoEntrySelected',
+    components: {    
     Fab: defineAsyncComponent(() => import("../components/Fab")),
   },
   methods: {

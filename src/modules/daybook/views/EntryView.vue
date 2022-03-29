@@ -50,6 +50,7 @@ import uploadImage  from '../helpers/uploadImage';
 
 
 export default {
+    name:'EntryView',
     components: {
         Fab: defineAsyncComponent(() => import("../components/Fab")),
     },
