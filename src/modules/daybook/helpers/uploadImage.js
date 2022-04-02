@@ -8,9 +8,8 @@ const uploadImage = async(file) =>{
         const URL = "https://api.cloudinary.com/v1_1/duphx2ezk/image/upload";
         const {data}=await axios.post(URL,formData);           
         return data.secure_url;
-
-
     }catch(error){
+        //console.log("Error");
        // console.log(error);
        return null;
     }
