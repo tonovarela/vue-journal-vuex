@@ -65,4 +65,62 @@ describe('Vuex pruebas en el Journal Module',()=>{
             
      })
 
+     test('Getters: getentriesByTerm getEntrybyId',()=>{
+        const store = createVuexStore(journalState); 
+
+         //console.log(journalState.entries);
+        const  [entry1, entry2] = journalState.entries;
+        expect(store.getters['journal/getEntriesByTerm']('').length).toBe(3)
+        expect(store.getters['journal/getEntriesByTerm']('Hola').length).toBe(1)        
+        expect(store.getters['journal/getEntriesByTerm']('Hola')).toEqual([entry1]);         
+        expect(store.getters['journal/getEntriesById']('-Mz2XELbKHLiTt97ay8g')).toEqual(entry1);
+     })
+
+     test('Actios : loadEntries',async()=>{
+
+        const store = createVuexStore({isLoading:true, entries:[]});
+        
+         await store.dispatch('journal/loadEntries')
+        //expect(store.state.journal.entries.length).toBe(3)
+     });
+
+     test('Actions : updateEntry',async()=>{
+        const store = createVuexStore(journalState);        
+        const updatedEntry = 
+            {
+                id: "-Mz2XELbKHLiTt97ay8g",
+                date: 1648252992582,
+                masInfo: {info:"Varela"},
+                picture: "https://res.cloudinary.com/duphx2ezk/image/upload/v1648253006/cb9rzvjlw2krjwg3rioc.png",
+                text: "Estos son cambios desde pruebas"
+            };
+        
+         await store.dispatch('journal/updateEntry',updatedEntry)                  
+         expect(store.state.journal.entries.find(e=>e.id===updatedEntry.id)).toEqual({
+            id: "-Mz2XELbKHLiTt97ay8g",
+            date: 1648252992582,
+            picture: "https://res.cloudinary.com/duphx2ezk/image/upload/v1648253006/cb9rzvjlw2krjwg3rioc.png",
+            text: "Estos son cambios desde pruebas"
+         })
+     });
+
+     test('Actions : createEntry y delete entry',async()=>{
+        const store = createVuexStore(journalState);        
+        const newEntry = 
+            {                
+                date: 1648252992582,             
+                picture: "https://res.cloudinary.com/duphx2ezk/image/upload/v1648253006/cb9rzvjlw2krjwg3rioc.png",
+                text: "Otra entracccccda"
+            };
+        
+        await store.dispatch('journal/createEntry',newEntry);
+        
+         const [entry]  = store.state.journal.entries;
+         console.log(entry);
+          expect(store.state.journal.entries.find(e=>e.id===entry.id)).toEqual(entry);
+
+        await store.dispatch('journal/deleteEntry',entry.id);
+        expect(store.state.journal.entries.find(e=>e.id===entry.id)).toBeUndefined();
+     });
+
 });

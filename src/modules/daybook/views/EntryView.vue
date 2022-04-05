@@ -9,14 +9,14 @@
             </span>
         </div>
 
-        <div> 
+        <div>
 
-            <input accept="image/png, image/jpeg" v-show="false" ref="ImageSelector" type="file"  @change="onSelectedImage"   />
-            <button  v-if="entry.id" @click="onDeleteEntry" class="btn btn-danger mx-2">
+            <input accept="image/png, image/jpeg" v-show="false" ref="ImageSelector" type="file" @change="onSelectedImage" />
+            <button v-if="entry.id" @click="onDeleteEntry" class="btn btn-danger mx-2">
                 Borrar
                 <i class="fa fa-trash-alt"></i>
             </button>
-            <button  @click="onSelectImage" class="btn btn-primary">
+            <button @click="onSelectImage" class="btn btn-primary">
                 Subir foto
                 <i class="fa fa-upload"></i>
             </button>
@@ -46,11 +46,10 @@ import {
 
 import getDayMothYear from '../helpers/getDayMothYear'
 import Swal from 'sweetalert2';
-import uploadImage  from '../helpers/uploadImage';
-
+import uploadImage from '../helpers/uploadImage';
 
 export default {
-    name:'EntryView',
+    name: 'EntryView',
     components: {
         Fab: defineAsyncComponent(() => import("../components/Fab")),
     },
@@ -64,8 +63,8 @@ export default {
     data() {
         return {
             entry: null,
-            localImage:null,
-            file:null
+            localImage: null,
+            file: null
         }
     },
 
@@ -92,14 +91,14 @@ export default {
         }
     },
     methods: {
-        ...mapActions('journal', ['updateEntry', 'createEntry','deleteEntry']),
+        ...mapActions('journal', ['updateEntry', 'createEntry', 'deleteEntry']),
         async saveEntry() {
             new Swal({
-             title:"Espere por favor",
-             allowOutsideClick:false
+                title: "Espere por favor",
+                allowOutsideClick: false
             });
             Swal.showLoading();
-            this.entry.picture=await uploadImage(this.file);             
+            this.entry.picture = await uploadImage(this.file);
             if (this.id == "new") {
                 await this.createEntry(this.entry);
                 const id = this.entry.id;
@@ -113,46 +112,48 @@ export default {
             } else {
                 this.updateEntry(this.entry);
             }
-            Swal.fire('Guardado','Entrada registrada con exito','success');
-            this.localImage= null;
+            Swal.fire('Guardado', 'Entrada registrada con exito', 'success');
+            this.localImage = null;
 
         },
 
-        async onDeleteEntry() {  
-            
-            const {isDenied} = await Swal.fire({
-                title:"Esta seguro?",
-                text:"Una vez borrado, no se puede recuperar",
-                showDenyButton:true,
-                confirmButtonText:"Si, estoy seguro"
+        async onDeleteEntry() {
+
+            const {
+                isDenied
+            } = await Swal.fire({
+                title: "Esta seguro?",
+                text: "Una vez borrado, no se puede recuperar",
+                showDenyButton: true,
+                confirmButtonText: "Si, estoy seguro"
             });
-            if (isDenied){
+            if (isDenied) {
                 return;
             }
-            new Swal({
-                title:"Espere por favor",
-                allowOutsideClick:false,
+             Swal.fire({
+                title: "Espere por favor",
+                allowOutsideClick: false,
             });
             Swal.showLoading();
-             await this.deleteEntry(this.entry.id)
-             this.$router.push({
-                 name:'no-entry'
-             });  
-             Swal.fire('Eliminado','Entrada eliminada con exito','success');           
+            //await this.deleteEntry(this.entry.id)
+            // this.$router.push({
+            //     name: 'no-entry'
+            // });
+            Swal.fire('Eliminado', 'Entrada eliminada con exito', 'success');
 
         },
-        onSelectImage(){
-             this.$refs.ImageSelector.click();
-        },  
-        onSelectedImage(event){
-            const [file]= event.target.files;
-          if (!file){              
-              return;
-          }                
-          this.file= file;
-           const fr = new FileReader();
-           fr.onload =() =>this.localImage =fr.result;           
-          fr.readAsDataURL(file);
+        onSelectImage() {
+            this.$refs.ImageSelector.click();
+        },
+        onSelectedImage(event) {
+            const [file] = event.target.files;
+            if (!file) {
+                return;
+            }
+            this.file = file;
+            const fr = new FileReader();
+            fr.onload = () => this.localImage = fr.result;
+            fr.readAsDataURL(file);
         },
         loadEntry() {
             let entry = {};
@@ -162,11 +163,12 @@ export default {
                     date: new Date().getTime()
                 }
             } else {
-                entry = this.getEntriesById(this.id);
+                entry = this.getEntriesById(this.id);            
+                if (!entry) return this.$router.push({
+                    name: 'no-entry'
+                });                
             }
-            if (!entry) return this.$router.push({
-                name: 'no-entry'
-            });
+
             this.entry = entry;
         }
     },
