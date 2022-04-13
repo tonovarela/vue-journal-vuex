@@ -30,14 +30,15 @@
 <script>
 import { ref } from "vue";
 import useAuth from "../composables/useAuth";
-import Swal from 'sweetalert2';
+
 import {useRouter} from "vue-router";
+import Swal from "sweetalert2";
 
 
 
 export default {
   setup(){
-    const { createUser } = useAuth()
+    const { createUser} = useAuth()
     const router= useRouter();
     const userForm = ref({
       email:'mestelles@litoprocess.com',
@@ -50,11 +51,7 @@ export default {
         Swal.fire('Error',message,'error')
         return
       }
-      router.push({name:'no-entry'})
-
-      
-
-      
+       router.push({name: 'no-entry'})
     }
     return {
         userForm,

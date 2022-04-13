@@ -10,7 +10,7 @@ export default {
         {
             path: 'register',
             name: 'register',
-            component:()=>import(/* webpackChunkName: "login" */ '@/modules/auth/views/Register.vue'),
+            component:()=>import(/* webpackChunkName: "register" */ '@/modules/auth/views/Register.vue'),
         }
 
 

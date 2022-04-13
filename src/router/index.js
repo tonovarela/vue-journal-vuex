@@ -3,6 +3,8 @@ import Home from '../views/Home.vue'
 
 import dayBookRouter from  '../modules/daybook/router'
 import authRouter from '../modules/auth/router'
+import isAuthenticatedGuard from "@/modules/auth/router/authGuard";
+
 
 const routes = [
   {
@@ -21,7 +23,8 @@ const routes = [
   },
   {
     path:'/daybook',
-    ...dayBookRouter      
+    beforeEnter:[isAuthenticatedGuard],
+    ...dayBookRouter
   }
 ]
 
