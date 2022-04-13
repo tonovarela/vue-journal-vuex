@@ -5,9 +5,9 @@ import { shallowMount } from '@vue/test-utils'
 import journal from '@/modules/daybook/store/journal'
 import { journalState } from '../../../mock-data/test-journal-state';
 import EntryView from '@/modules/daybook/views/EntryView.vue';
-
-
 import Swal from 'sweetalert2';
+
+
 jest.mock('sweetalert2',()=>({
     fire: jest.fn(),
     showLoading:jest.fn(),

@@ -135,7 +135,7 @@ export default {
                 allowOutsideClick: false,
             });
             Swal.showLoading();
-            //await this.deleteEntry(this.entry.id)
+            await this.deleteEntry(this.entry.id)
             // this.$router.push({
             //     name: 'no-entry'
             // });
