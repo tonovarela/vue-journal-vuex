@@ -1,30 +1,39 @@
+
 <template>
-    <nav class="navbar bg-primary">
-    <a class="navbar-brand text-white" >
-        <img src="@/assets/logo.png"  height="24" class="d-inline-block align-text-top mx-2" />
-        DayBook
+  <nav class="navbar bg-primary">
+    <a class="navbar-brand text-white">
+      <img
+        src="@/assets/logo.png"
+        height="24"
+        class="d-inline-block align-text-top mx-2"
+      />
+      DayBook
     </a>
     <div class="d-flex">
-        <button class="btn btn-outline-info mx-2">
-          {{user.name}}
-<i class="fa fa-sign-out-alt"></i>
-            
-            </button>
+      <button @click="onlogOut" class="btn btn-outline-info mx-2">
+        <i class="fa fa-sign-out-alt"></i>
+         {{userName}}
+      </button>
     </div>
-    </nav>
+  </nav>
 </template>
 <script>
-
-import {useStore} from "vuex";
-import {computed} from "vue";
-
+import useAuth from '@/modules/auth/composables/useAuth';
+import { useRouter } from 'vue-router';
 export default {
-  setup(){
-    const store=useStore();
-    return {
-      user:computed(()=>store.getters('auth/currentUser'))
+     setup(){
+      const router = useRouter(); 
+     const {userName,logOut} = useAuth();
 
-    }
-  }
-}
+     return {
+       userName,
+       onlogOut:()=>{
+         router.push({name:'login'});
+         logOut();
+       }
+
+     }
+  
+     }
+};
 </script>
